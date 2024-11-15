@@ -25,8 +25,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $users = DB::table('users')->get();
-        return view('/admin/home', compact('users'));
+        if(auth()->check()){
+            switch(auth()->user()->role){
+                case "1":
+                    $users = DB::table('users')->get();
+                    return view('/admin/home', compact('users'));
+                    break;
+                case "2":
+                    return redirect()->route('lecturer.index');
+                    break;
+                case "3":
+                    return redirect()->route('student.index');
+                    break;
+            }
+        }
     }
 
     public function status(Request $request, $id)

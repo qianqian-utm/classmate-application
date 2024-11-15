@@ -31,13 +31,11 @@ class AdminController extends Controller
     }
 
     public function notification(){
-
         $classDetails = ClassDetail::with('subject')->orderBy('created_at', 'desc')->get();
         $assignmentDetails = AssignmentDetail::with('subject')->orderBy('created_at', 'desc')->get();
         $examDetails = ExamDetail::orderBy('created_at', 'desc')->get();
         return view ('admin.notification', compact('classDetails', 'assignmentDetails', 'examDetails'));
     }
-    
 //    NOTIFICATIONS FUNCTION
 
 public function classNotification(){

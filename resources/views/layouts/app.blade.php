@@ -78,113 +78,100 @@ button:disabled {
 </head>
 <body>
     <div id="app">
-        
-
         <main class="">
-    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:block; width:20%;" id="mySidebar">
-        <div class=" d-flex justify-content-end">
-
-            <button class="btn btn-secondary" onclick="w3_close()">X</button>
-        </div>
-        <img class="mb-3" src="{{ asset('images/classmatelogo.png') }}" alt="Logo" style="width: 80px; height: auto; display: block; margin:  auto;">
-
-        <a href="{{ route('admin.notification') }}" class="w3-bar-item w3-button">Notification</a>
-        @if(auth()->check() && auth()->user()->role == '1')
-    <a href="#" class="w3-bar-item w3-button">Schedule</a>
-        
-        <a href="#" class="w3-bar-item w3-button">Settings</a>
-        <a href="{{ route('admin.createSubject') }}" class="w3-bar-item w3-button">Create Subject</a>
-        <a href="{{ route('tt.index') }}" class="w3-bar-item w3-button">Create Timetable</a>
-    @endif
-
-        @if(auth()->check() && auth()->user()->role == '2')
-    <a href="#" class="w3-bar-item w3-button">Schedule</a>
-        <a href="#" class="w3-bar-item w3-button">Notification</a>
-        <a href="#" class="w3-bar-item w3-button">Settings</a>
-    @endif
-
-    @if(auth()->check() && auth()->user()->role == '3')
-    <a href="{{ route('student.notifications') }}" class="w3-bar-item w3-button">Schedule</a>
-        <a href="#" class="w3-bar-item w3-button">Notification</a>
-        <a href="#" class="w3-bar-item w3-button">Settings</a>
-    @endif
-       
-
-    </div>
-
-    <div class="" id="main" style="margin-left: 20%;">
-        
-        <div class="">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-        <div class="">
-            <button id="openNav" class="w3-button " onclick="w3_open()" style="display:none;">&#9776;</button>
-            </div>
-            <div class="container">
-             
-            
-                    
-               
-           
-            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
-                    <!-- {{ config('app.name', 'ClassMate') }} -->
-                   
-                    <img src="{{ asset('images/classmatelogo.png') }}" alt="Logo" style="width: 50px; height: auto; display: block; margin:  auto;">
-
-                      ClassMate
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+            <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:block; width:20%;" id="mySidebar">
+                <div class=" d-flex justify-content-end">
+                    <button class="btn btn-secondary" onclick="w3_close()">X</button>
                 </div>
+                <a href="{{ url('/') }}">
+                    <img class="mb-3" src="{{ asset('images/classmatelogo.png') }}" alt="Logo" style="width: 80px; height: auto; display: block; margin:  auto;">
+                </a>
+                @if(auth()->check() && auth()->user()->role == '1')
+                    <a href="{{ url('/') }}" class="w3-bar-item w3-button">Users</a>
+                    <a href="{{ route('admin.notification') }}" class="w3-bar-item w3-button">Notification</a>
+                    <a href="#" class="w3-bar-item w3-button">Schedule</a>
+                    <a href="#" class="w3-bar-item w3-button">Settings</a>
+                    <a href="{{ route('admin.createSubject') }}" class="w3-bar-item w3-button">Create Subject</a>
+                    <a href="{{ route('tt.index') }}" class="w3-bar-item w3-button">Create Timetable</a>
+                @endif
+
+                @if(auth()->check() && auth()->user()->role == '2')
+                    <a href="#" class="w3-bar-item w3-button">Schedule</a>
+                    <a href="#" class="w3-bar-item w3-button">Notification</a>
+                    <a href="#" class="w3-bar-item w3-button">Settings</a>
+                @endif
+
+                @if(auth()->check() && auth()->user()->role == '3')
+                    <a href="{{ route('student.notifications') }}" class="w3-bar-item w3-button">Schedule</a>
+                    <a href="#" class="w3-bar-item w3-button">Notification</a>
+                    <a href="#" class="w3-bar-item w3-button">Settings</a>
+                @endif
             </div>
-        </nav>
-        
-        </div>
-        @yield('content')
-    </div>
-</main>
+
+            <div class="" id="main" style="margin-left: 20%;">
+                <div class="">
+                    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+                        <div class="">
+                            <button id="openNav" class="w3-button " onclick="w3_open()" style="display:none;">&#9776;</button>
+                        </div>
+                        <div class="container">
+                            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
+                                <img src="{{ asset('images/classmatelogo.png') }}" alt="Logo" style="width: 50px; height: auto; display: block; margin:  auto;">
+
+                                ClassMate
+                            </a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <!-- Left Side Of Navbar -->
+                                <ul class="navbar-nav me-auto">
+
+                                </ul>
+
+                                <!-- Right Side Of Navbar -->
+                                <ul class="navbar-nav ms-auto">
+                                    <!-- Authentication Links -->
+                                    @guest
+                                        @if (Route::has('login'))
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                            </li>
+                                        @endif
+
+                                        @if (Route::has('register'))
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                            </li>
+                                        @endif
+                                    @else
+                                        <li class="nav-item dropdown">
+                                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                                {{ Auth::user()->name }}
+                                            </a>
+
+                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                                document.getElementById('logout-form').submit();">
+                                                    {{ __('Logout') }}
+                                                </a>
+
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                    @csrf
+                                                </form>
+                                            </div>
+                                        </li>
+                                    @endguest
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                @yield('content')
+            </div>
+        </main>
     </div>
 
 
