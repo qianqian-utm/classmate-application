@@ -16,13 +16,13 @@
 
                         <div class="mb-3 col-md-12 justify-content-center row">
                             <div class="col-md-6">
-                            <label for="role" class="col-form-label text-md-end">{{ __('Role') }}</label>
+                                <label for="role" class="col-form-label text-md-end">{{ __('Role') }}</label>
 
-                            <select  id="role" name="role" class="form-select" aria-label="Default select example">
-                        <option selected>Please select your role</option>
-                        <option value="2">Lecturer</option>
-                        <option value="3">Student</option>
-                        </select>
+                                <select id="role" name="role" class="form-select" aria-label="Default select example" required>
+                                    <option value="">Please select your role</option>
+                                    <option value="2">Lecturer</option>
+                                    <option value="3">Student</option>
+                                </select>
 
                             </div>
                         </div>
