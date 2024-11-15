@@ -1,36 +1,205 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>ClassMate</title>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+    <!-- Scripts -->
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <style>
+        /* Toggle switch style */
+/* Toggle switch style */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #4CAF50; /* Green for active state */
+}
+
+input:checked + .slider:before {
+    transform: translateX(18px);
+}
+
+/* Disabled state */
+input:disabled + .slider {
+    cursor: not-allowed; /* Prevent interaction */
+}
+
+button:disabled {
+    cursor: not-allowed ;
+}
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        
+
+        <main class="">
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:block; width:20%;" id="mySidebar">
+        <div class=" d-flex justify-content-end">
+
+            <button class="btn btn-secondary" onclick="w3_close()">X</button>
         </div>
-    </body>
+        <img class="mb-3" src="{{ asset('images/classmatelogo.png') }}" alt="Logo" style="width: 80px; height: auto; display: block; margin:  auto;">
+
+        <a href="{{ route('admin.notification') }}" class="w3-bar-item w3-button">Notification</a>
+        @if(auth()->check() && auth()->user()->role == '1')
+    <a href="#" class="w3-bar-item w3-button">Schedule</a>
+        
+        <a href="#" class="w3-bar-item w3-button">Settings</a>
+        <a href="{{ route('admin.createSubject') }}" class="w3-bar-item w3-button">Create Subject</a>
+        <a href="{{ route('tt.index') }}" class="w3-bar-item w3-button">Create Timetable</a>
+    @endif
+
+        @if(auth()->check() && auth()->user()->role == '2')
+    <a href="#" class="w3-bar-item w3-button">Schedule</a>
+        <a href="#" class="w3-bar-item w3-button">Notification</a>
+        <a href="#" class="w3-bar-item w3-button">Settings</a>
+    @endif
+
+    @if(auth()->check() && auth()->user()->role == '3')
+    <a href="{{ route('student.notifications') }}" class="w3-bar-item w3-button">Schedule</a>
+        <a href="#" class="w3-bar-item w3-button">Notification</a>
+        <a href="#" class="w3-bar-item w3-button">Settings</a>
+    @endif
+       
+
+    </div>
+
+    <div class="" id="main" style="margin-left: 20%;">
+        
+        <div class="">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <div class="">
+            <button id="openNav" class="w3-button " onclick="w3_open()" style="display:none;">&#9776;</button>
+            </div>
+            <div class="container">
+             
+            
+                    
+               
+           
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
+                    <!-- {{ config('app.name', 'ClassMate') }} -->
+                   
+                    <img src="{{ asset('images/classmatelogo.png') }}" alt="Logo" style="width: 50px; height: auto; display: block; margin:  auto;">
+
+                      ClassMate
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav me-auto">
+
+                    </ul>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ms-auto">
+                        <!-- Authentication Links -->
+                        @guest
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                            @endif
+
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        </div>
+        @yield('content')
+    </div>
+</main>
+    </div>
+
+
+    <script>
+function w3_open() {
+    document.getElementById("main").style.marginLeft = "20%";
+    document.getElementById("mySidebar").style.width = "20%";
+    document.getElementById("mySidebar").style.display = "block";
+    document.getElementById("openNav").style.display = 'none';
+}
+function w3_close() {
+    document.getElementById("main").style.marginLeft = "0";
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("openNav").style.display = "inline-block";
+}
+</script>
+</body>
 </html>
