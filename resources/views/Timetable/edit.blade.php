@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Add Timetable</h1>
+    <h1>Edit Timetable</h1>
 
-    <form action="" method="POST">
+    <form action="{{ route('tt.update', $timetable->id) }}" method="POST">
         @csrf
+        @method('PUT')
         <div class="form-group">
             <label for="group_id">Group</label>
             <select name="group_id" class="form-control">
