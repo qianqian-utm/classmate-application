@@ -69,5 +69,6 @@ Route::group(['prefix' => 'timetable'], function () {
     Route::get('/create', [TimetableController::class, 'create'])->name('tt.create');
     Route::post('/create/store', [TimetableController::class, 'store'])->name('tt.store');
     Route::get('/edit/{id}', [TimetableController::class, 'edit'])->name('tt.edit');
-    Route::put('/update/{id}', [TimetableController::class, 'update'])->name('tt.update');  // Changed from GET to PUT
+    Route::put('/update/{id}', [TimetableController::class, 'update'])->name('tt.update');
+    Route::delete('/delete/{id}', [TimetableController::class, 'delete'])->name('tt.delete');
 });

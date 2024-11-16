@@ -57,9 +57,20 @@ class TimetableController extends Controller
             'venue' => 'nullable|string',
         ]);
 
-        $timetable = Timetable::findOrFail($id);  // Add this line
+        $timetable = Timetable::findOrFail($id);
         $timetable->update($request->all());
 
-        return redirect()->route('tt.index')->with('success', 'Timetable updated successfully.');  // Fixed route name
+        return redirect()->route('tt.index')->with('success', 'Timetable updated successfully.');
     }
+
+    public function delete($id)
+    {
+        $timetable = Timetable::findOrFail($id);
+        if ($timetable) {
+            $timetable->delete();
+            return redirect()->route('tt.index')->with('success', 'Timetable deleted successfully.');
+        }
+        return redirect()->route('tt.index')->with('error', 'Failed to delete timetable.');
+    }
+
 }
