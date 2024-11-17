@@ -40,15 +40,4 @@ class HomeController extends Controller
             }
         }
     }
-
-
-    public function delete($id)
-    {
-        $user = User::find($id);
-        if ($user) {
-            $user->delete();
-            return redirect()->route('home')->with('success', 'User deleted successfully');
-        }
-        return redirect()->route('home')->with('error', 'User not found');
-    }
 }

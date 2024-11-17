@@ -59,11 +59,11 @@ class AdminController extends Controller
 
     public function editClassNotification($id)
     {
-    $classDetail = ClassDetail::find($id);
-    if ($classDetail) {
-        $subjects = Subject::all();
-        return view('admin.notification.editClass', compact('classDetail', 'subjects'));
-    }
+        $classDetail = ClassDetail::find($id);
+        if ($classDetail) {
+            $subjects = Subject::all();
+            return view('admin.notification.editClass', compact('classDetail', 'subjects'));
+        }
     }
 
     public function updateClassNotification(Request $request, $id)
