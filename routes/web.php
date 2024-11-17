@@ -29,9 +29,6 @@ Route::middleware(['auth'])->group(function () {
 // Protected routes (requires authentication)
 // Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-// Change the route for status to include the user ID as a parameter
-Route::post('/status/{id}', [HomeController::class, 'status'])->name('status');
-
 Route::delete('/user/{id}', [HomeController::class, 'delete'])->name('user.delete');
 
 Route::group(['prefix' => 'student'], function () {

@@ -69,7 +69,6 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'status' => false,
             'role' => $data['role'],
         ]);
     }
@@ -78,6 +77,6 @@ class RegisterController extends Controller
     {
         auth()->logout(); // Log out the automatically authenticated user
         return redirect()->route('login')
-            ->with('status', 'Registration successful! You need to wait for the admin to approve your account.');
+            ->with('success', 'Registration successful! Proceed to login your account.');
     }
 }

@@ -41,20 +41,6 @@ class HomeController extends Controller
         }
     }
 
-    public function status(Request $request, $id)
-    {
-        $data = User::find($id);
-        if($data->status == 0)
-        {
-            $data->status = 1;
-        }
-        else
-        {
-            $data->status = 0;
-        }
-        $data->save();
-        return Redirect()->route('home')->with('success', 'Status updated successfully');
-    }
 
     public function delete($id)
     {

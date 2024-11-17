@@ -13,9 +13,9 @@
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">
-                    @if (session('status'))
+                    @if (session('success'))
                         <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                            {{ session('success') }}
                         </div>
                     @endif
 
@@ -26,7 +26,6 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>Status</th>
                                 <th colspan="2" class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -36,18 +35,6 @@
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>@if($user->role == 2) Lecturer @elseif($user->role == 3) Student @else Admin @endif</td>
-                                    <td>@if($user->status == 1) Active @else Inactive @endif</td>
-                                    <td>
-                                    <form id="status-form-{{ $user->id }}" action="{{ route('status', $user->id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        <label class="switch">
-                                            <input type="checkbox" {{ $user->status == 1 ? 'checked' : '' }} 
-                                                {{ $user->role == 1 ? 'disabled' : '' }} 
-                                                onchange="document.getElementById('status-form-{{ $user->id }}').submit()">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </form>
-                                </td>
                                 <td>
                                 <form action="{{ route('user.delete', $user->id) }}" method="POST" style="display: inline;">
                                     @csrf
