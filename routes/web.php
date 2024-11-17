@@ -8,16 +8,12 @@ use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TimetableController;
 
-// Public route
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 // Authentication routes
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     
     // Lecturer routes
     Route::middleware([RoleMiddleware::class . ':2'])->group(function () {
@@ -72,3 +68,6 @@ Route::group(['prefix' => 'timetable'], function () {
     Route::put('/update/{id}', [TimetableController::class, 'update'])->name('tt.update');
     Route::delete('/delete/{id}', [TimetableController::class, 'delete'])->name('tt.delete');
 });
+
+Route::get('/google/redirect', [App\Http\Controllers\GoogleLoginController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/google/callback', [App\Http\Controllers\GoogleLoginController::class, 'handleGoogleCallback'])->name('google.callback');
