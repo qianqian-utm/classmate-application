@@ -7,6 +7,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Middleware\RoleMiddleware; 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TimetableController;
+use App\Http\Controllers\UserController;
 
 // Authentication routes
 Auth::routes();
@@ -26,10 +27,12 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-// Protected routes (requires authentication)
-// Route::get('/home', [HomeController::class, 'index'])->name('home');
-
-Route::delete('/user/{id}', [HomeController::class, 'delete'])->name('user.delete');
+// CRUD User routes
+Route::group(['prefix' => 'user'], function () {
+    Route::delete('/delete/{id}', [UserController::class, 'deleteUser'])->name('user.delete');
+    Route::get('/edit/{id}', [UserController::class, 'editUser'])->name('user.edit');
+    Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('user.update');
+});
 
 Route::group(['prefix' => 'student'], function () {
     Route::get('/index', [StudentController::class, 'index'])->name('student.index');

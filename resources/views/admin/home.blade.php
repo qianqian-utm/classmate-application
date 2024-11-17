@@ -36,6 +36,9 @@
                                     <td>{{ $user->email }}</td>
                                     <td>@if($user->role == 2) Lecturer @elseif($user->role == 3) Student @else Admin @endif</td>
                                 <td>
+                                <button type="submit" onclick="window.location.href='{{ route('user.edit' , $user->id) }}'" class="btn btn-warning btn-sm" >
+                                    <i class="fas fa-pencil"></i>
+                                </button>
                                 <form action="{{ route('user.delete', $user->id) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
