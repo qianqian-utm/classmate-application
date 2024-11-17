@@ -20,6 +20,10 @@
                     <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
                 </div>
                 <div class="mb-3">
+                    <label for="ic_number" class="form-label">IC Number/Passport</label>
+                    <input class="form-control" id="ic_number" name="ic_number" value="{{ $user->ic_number }}" required>
+                </div>
+                <div class="mb-3">
                     <label for="role" class="col-form-label text-md-end">{{ __('Role') }}</label>
                     <select id="role" name="role" class="form-select" aria-label="Default select example" required {{ ($user->role == 1 ? "disabled":"") }}>
                         <option value="">Please select your role</option>
