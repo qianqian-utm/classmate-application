@@ -10,8 +10,20 @@ class StudentController extends Controller
     public function index()
     {
         // Get the authenticated student's data
-        $student = auth()->user();
-        return view('Student.index', compact('student'));
+        if(auth()->check()){
+            switch(auth()->user()->role){
+                case "1":
+                    return redirect()->route('home');
+                    break;
+                case "2":
+                    return redirect()->route('lecturer.index');
+                    break;
+                case "3":
+                    $student = auth()->user();
+                    return view('Student.index', compact('student'));
+                    break;
+            }
+        }
     }
 
     public function notifications()
