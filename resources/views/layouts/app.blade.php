@@ -103,7 +103,8 @@ button:disabled {
 
                 @if(auth()->check() && auth()->user()->role == '3')
                     <a href="{{ route('student.notifications') }}" class="w3-bar-item w3-button">Schedule</a>
-                    <a href="#" class="w3-bar-item w3-button">Notification</a>
+                    <a href="{{ route('admin.notification') }}" class="w3-bar-item w3-button">Notification</a>
+
                     <a href="#" class="w3-bar-item w3-button">Settings</a>
                 @endif
             </div>
