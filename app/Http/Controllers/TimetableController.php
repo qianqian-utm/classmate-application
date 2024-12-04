@@ -27,10 +27,10 @@ class TimetableController extends Controller
         $request->validate([
             'group_id' => 'required|exists:groups,id',
             'day' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
+            'start_time' => 'nullable|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i',
             'date' => 'required',
-            'venue' => 'required',
+            'venue' => 'nullable',
         ]);
 
         Timetable::create($request->all());
@@ -50,11 +50,12 @@ class TimetableController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'group_id' => 'required|exists:groups,id',
+           'group_id' => 'required|exists:groups,id',
             'day' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
-            'venue' => 'nullable|string',
+            'start_time' => 'nullable|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i',
+            'date' => 'required',
+            'venue' => 'nullable',
         ]);
 
         $timetable = Timetable::findOrFail($id);

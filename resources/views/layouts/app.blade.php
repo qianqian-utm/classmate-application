@@ -92,7 +92,7 @@ button:disabled {
                     <a href="#" class="w3-bar-item w3-button">Schedule</a>
                     <a href="#" class="w3-bar-item w3-button">Settings</a>
                     <a href="{{ route('admin.createSubject') }}" class="w3-bar-item w3-button">Create Subject</a>
-                    <a href="{{ route('tt.index') }}" class="w3-bar-item w3-button">Create Timetable</a>
+                   
                 @endif
 
                 @if(auth()->check() && auth()->user()->role == '2')
@@ -107,6 +107,8 @@ button:disabled {
 
                     <a href="#" class="w3-bar-item w3-button">Settings</a>
                 @endif
+                <a href="{{ route('tt.index') }}" class="w3-bar-item w3-button">Timetable</a>
+
             </div>
 
             <div class="" id="main" style="margin-left: 20%;">
