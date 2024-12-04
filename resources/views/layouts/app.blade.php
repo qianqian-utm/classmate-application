@@ -74,6 +74,44 @@ button:disabled {
     cursor: not-allowed ;
 }
 
+.badge {
+    background-color: #43498a;
+    color: white;
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 0.9em;
+    margin: 0 2px;
+
+    &.badge-lab {
+        background-color: #2b914a;
+    }
+
+    &.badge-individual {
+        background-color: #2b6091;
+    }
+
+    &.badge-group_project {
+        background-color: #916d2b;
+    }
+
+    &.badge-quiz {
+        background-color: #2b914a;
+    }
+
+    &.badge-midterm {
+        background-color: #2b6091;
+    }
+
+    &.badge-final {
+        background-color: #916d2b;
+    }
+}
+
+
+
+
+
     </style>
 </head>
 <body>

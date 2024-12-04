@@ -4,28 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Timetable;
-use App\Models\Group;
+use App\Models\Subject;
 
 class TimetableController extends Controller
 {
-    //
     // TimetableController.
     public function index()
     {
-        $timetables = Timetable::with('group')->get();
+        $timetables = Timetable::with('subject')->get();
         return view('Timetable/index', compact('timetables'));
     }
 
     public function create()
     {
-        $groups = Group::all();
-        return view('Timetable/create', compact('groups'));
+        $subjects = Subject::all();
+        return view('Timetable/create', compact('subjects'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'group_id' => 'required|exists:groups,id',
+            'subject_id' => 'required|exists:subjects,id',
             'day' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
@@ -40,9 +39,9 @@ class TimetableController extends Controller
 
     public function edit($id)
     {
-        $groups = Group::all();
+        $subjects = Subject::all();
         $timetable = Timetable::find($id);
-        return view('Timetable/edit', compact( 'groups', 'timetable'));
+        return view('Timetable/edit', compact( 'subjects', 'timetable'));
     }
 
 
@@ -50,7 +49,7 @@ class TimetableController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'group_id' => 'required|exists:groups,id',
+            'subject_id' => 'required|exists:subjects,id',
             'day' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',

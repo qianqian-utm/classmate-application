@@ -7,10 +7,10 @@
         @csrf
         @method('PUT')
         <div class="form-group">
-            <label for="group_id">Group</label>
-            <select name="group_id" class="form-control">
-                @foreach ($groups as $group)
-                    <option value="{{ $group->id }}">{{ $group->name }}</option>
+            <label for="subject_id">Subject</label>
+            <select name="subject_id" class="form-control">
+                @foreach ($subjects as $subject)
+                    <option value="{{ $subject->id }}">{{ $subject->name }}</option>
                 @endforeach
             </select>
         </div>
