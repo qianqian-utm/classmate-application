@@ -59,6 +59,18 @@
 
                         <div class="mb-3 col-md-12 justify-content-center row">
                             <div class="col-md-6">
+                            <label for="ic_number" class="col-form-label text-md-end">{{ __('IC number/Passport') }}</label>
+                            <input id="ic_number" class="form-control @error('ic_number') is-invalid @enderror" name="ic_number" value="{{ old('ic_number') }}" required>
+                                @error('ic_number')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mb-3 col-md-12 justify-content-center row">
+                            <div class="col-md-6">
                             <label for="password" class="col-form-label text-md-end">{{ __('Password') }}</label>
 
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">

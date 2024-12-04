@@ -20,6 +20,11 @@
                     <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
                 </div>
                 <div class="mb-3">
+                    <label for="ic_number" class="form-label">IC Number/Passport</label>
+                    <p>*Please remove the dash or any special characters. Example: 991112123456</p>
+                    <input class="form-control" id="ic_number" name="ic_number" value="{{ $user->ic_number }}" pattern="([A-Za-z0-9])+" required>
+                </div>
+                <div class="mb-3">
                     <label for="role" class="col-form-label text-md-end">{{ __('Role') }}</label>
                     <select id="role" name="role" class="form-select" aria-label="Default select example" required {{ ($user->role == 1 ? "disabled":"") }}>
                         <option value="">Please select your role</option>

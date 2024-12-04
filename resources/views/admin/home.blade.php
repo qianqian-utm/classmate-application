@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <a href="{{ route('user.create') }}" class="btn btn-primary">Add User</a>
             @if(session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
