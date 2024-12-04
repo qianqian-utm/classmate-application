@@ -20,7 +20,7 @@
                     <div class="" style="max-height: 550px; overflow-y:scroll;">
                         @foreach($classDetails as $classDetail)
                             <div class="mb-4" >
-                                <div class="card bg-white" style="max-height: 150px; overflow-y:scroll">
+                                <div class="card bg-white" style="">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between" >
                                             <p>{{ \Carbon\Carbon::parse($classDetail->created_at)->format('j F Y') }}</p>
@@ -43,7 +43,10 @@
                                             {{ $classDetail->subject->code }} {{ $classDetail->subject->name }} on {{ \Carbon\Carbon::parse($classDetail->date)->format('d F Y') }}
                                         </h5>
                                         <strong>{{ $classDetail->title }}</strong>
-                                        <p>{{ $classDetail->description }}</p>
+                                        <div>
+                                    <textarea class="form-control" name="" id="" disabled><p>{{ $classDetail->description }}</p></textarea>
+
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -60,10 +63,10 @@
                         <button class="btn btn-success" onclick="window.location.href='{{ route('admin.notification.exam') }}'"  type="button"><i class="fas fa-add"></i> Add</button>
                     @endif
                 </div>
-                <div class="pe-5" style="max-height: 550px; overflow-y:scroll;">
+                <div class="" style="max-height: 550px; overflow-y:scroll;">
                     @foreach($examDetails as $examDetail)
                         <div class="mb-4" >
-                            <div class="card bg-white" style="max-height: 150px; overflow-y:scroll">
+                            <div class="card bg-white" style="">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between" >
                                         <p>{{ \Carbon\Carbon::parse($examDetail->created_at)->format('j F Y') }}</p>
@@ -83,7 +86,10 @@
                                         </div>
                                     </div>
                                     <strong>{{ $examDetail->title }}</strong>
-                                    <p>{{ $examDetail->description }}</p>
+                                    <div>
+                                    <textarea class="form-control" name="" id="" disabled><p>{{ $examDetail->description }}</p></textarea>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +109,7 @@
                 <div class="" style="max-height: 550px; overflow-y:scroll;">
                     @foreach($assignmentDetails as $data)
                         <div class="mb-4" >
-                            <div class="card bg-white" style="max-height: 150px; overflow-y:scroll">
+                            <div class="card bg-white" style="">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between" >
                                         <p>{{ \Carbon\Carbon::parse($classDetail->created_at)->format('j F Y') }}</p>
@@ -125,7 +131,11 @@
                                     <h5>{{ $data->subject->code }} {{ $data->subject->name }} on {{ \Carbon\Carbon::parse($data->due_date)->format('d F Y') }}
                                     </h5>
                                     <strong>{{ $data->title }}</strong>
-                                    <p>{{ $data->description }}</p>
+                                    <div>
+                                    <textarea class="form-control" name="" id="" disabled><p>{{ $data->description }}</p></textarea>
+
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
