@@ -41,12 +41,23 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Assign Users</label>
-                            <select name="users[]" class="form-control" multiple="multiple" required>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}" 
-                                        {{ in_array($user->id, $selectedUsers) ? 'selected' : '' }}>
-                                        {{ $user->name }} ({{ $user->role_name }})
+                            <label class="form-label">Assign Lecturers</label>
+                            <select name="lecturers[]" class="form-control" multiple="multiple" required>
+                                @foreach($lecturers as $lecturer)
+                                    <option value="{{ $lecturer->id }}" 
+                                        {{ in_array($lecturer->id, $selectedLecturers) ? 'selected' : '' }}>
+                                        {{ $lecturer->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Assign Students</label>
+                            <select name="students[]" class="form-control" multiple="multiple" required>
+                                @foreach($students as $student)
+                                    <option value="{{ $student->id }}" 
+                                        {{ in_array($student->id, $selectedStudents) ? 'selected' : '' }}>
+                                        {{ $student->name }}
                                     </option>
                                 @endforeach
                             </select>

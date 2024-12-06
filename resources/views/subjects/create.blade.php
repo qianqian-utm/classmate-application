@@ -28,9 +28,17 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Assign Lecturers</label>
-                            <select name="users[]" class="form-control" multiple required>
-                                @foreach($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            <select name="lecturers[]" class="form-control" multiple required>
+                                @foreach($lecturers as $lecturer)
+                                    <option value="{{ $lecturer->id }}">{{ $lecturer->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Assign Students</label>
+                            <select name="students[]" class="form-control" multiple required>
+                                @foreach($students as $student)
+                                    <option value="{{ $student->id }}">{{ $student->name }}</option>
                                 @endforeach
                             </select>
                         </div>

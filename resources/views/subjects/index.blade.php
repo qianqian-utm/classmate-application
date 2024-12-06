@@ -69,6 +69,9 @@
                                     @endforelse
                                 </td>
                                 <td>
+                                    <a href="{{ route('subjects.show', $subject) }}" class="btn btn-info btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                     <a href="{{ route('subjects.edit', $subject) }}" class="btn btn-warning btn-sm">
                                         <i class="fas fa-pencil"></i>
                                     </a>
