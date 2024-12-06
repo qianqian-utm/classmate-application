@@ -49,10 +49,11 @@ class TimetableController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'group_id' => 'required|exists:groups,id',
+           'group_id' => 'required|exists:groups,id',
             'day' => 'required',
             'start_time' => 'nullable|date_format:H:i',
             'end_time' => 'nullable|date_format:H:i',
+            'date' => 'required',
             'venue' => 'nullable',
         ]);
 
