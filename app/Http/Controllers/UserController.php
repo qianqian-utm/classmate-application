@@ -4,11 +4,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 class UserController extends Controller
 {
-	public function deleteUser($id)
+    public function create()
+    {
+        return view('admin.user.addUser');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'ic_number' => 'required',
+            'role' => 'required',
+        ]);
+
+        // by default, new user's password is their IC number
+        $requestData = $request->all();
+        $request->request->add(['password' => Hash::make($requestData['ic_number'])]);
+
+        User::create($request->all());
+
+        return redirect()->route('home')->with('success', 'User created successfully.');
+    }
+
+    public function deleteUser($id)
     {
         $user = User::find($id);
         if ($user) {
@@ -18,7 +42,7 @@ class UserController extends Controller
         return redirect()->route('home')->with('error', 'User not found');
     }
 
-	public function editUser($id)
+    public function editUser($id)
     {
         $user = User::find($id);
         if ($user) {
