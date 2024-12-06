@@ -29,6 +29,8 @@ Route::middleware(['auth'])->group(function () {
 
 // CRUD User routes
 Route::group(['prefix' => 'user'], function () {
+    Route::get('/create', [UserController::class, 'create'])->name('user.create');
+    Route::post('/create/store', [UserController::class, 'store'])->name('user.store');
     Route::delete('/delete/{id}', [UserController::class, 'deleteUser'])->name('user.delete');
     Route::get('/edit/{id}', [UserController::class, 'editUser'])->name('user.edit');
     Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('user.update');
