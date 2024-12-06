@@ -7,7 +7,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <h2 class="mb-3">Notifications</h2>
+    <h2 class="mb-3">Notificationss</h2>
     <div class="row col-md-12">
         <div class="card col-md-4">
             <div class="card-body">
