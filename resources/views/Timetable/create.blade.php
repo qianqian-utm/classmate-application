@@ -20,22 +20,22 @@
                 <option value="Sunday">Sunday</option>
             </select>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="start_time">Start Time</label>
             <input type="time" name="start_time" class="form-control">
         </div>
         <div class="form-group">
             <label for="end_time">End Time</label>
             <input type="time" name="end_time" class="form-control">
-        </div>
+        </div> -->
         <div class="form-group">
             <label for="end_time">Date</label>
             <input type="date" name="date" class="form-control">
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="venue">Venue</label>
             <input type="text" name="venue" class="form-control">
-        </div>
+        </div> -->
         <button type="submit" class="btn btn-success">Save</button>
     </form>
 @endsection
