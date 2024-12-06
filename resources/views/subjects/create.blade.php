@@ -20,7 +20,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Assign Groups</label>
-                            <select name="groups[]" class="form-control" multiple required>
+                            <select name="groups[]" class="form-control" required>
                                 @foreach($groups as $group)
                                     <option value="{{ $group->id }}">{{ $group->name }}</option>
                                 @endforeach

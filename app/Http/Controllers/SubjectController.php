@@ -21,7 +21,7 @@ class SubjectController extends Controller
                 ->orWhere('name', 'like', '%' . $search . '%')
                 ->orWhereHas('users', function($userQuery) use ($search) {
                     $userQuery->where('name', 'like', '%' . $search . '%')
-                            ->where('role', 2); // Only lecturers
+                            ->where('role', 2);
                 });
             });
         }
@@ -33,8 +33,11 @@ class SubjectController extends Controller
             });
         }
 
-        $subjects = $query->with(['groups', 'users'])->paginate(10);
-        $groups = Group::all(); // To populate group filter dropdown
+        $subjects = $query->with(['groups', 'users'])
+            ->orderBy('name', 'asc')
+            ->paginate(10);
+
+        $groups = Group::all();
 
         return view('subjects.index', compact('subjects', 'groups'));
     }

@@ -41,7 +41,9 @@ class HomeController extends Controller
                     }
 
                     // Paginate results
-                    $users = $query->paginate(10);
+                    $users = $query ->orderBy('role', 'asc')
+                        ->orderBy('name', 'asc')
+                        ->paginate(10);
 
                     return view('/admin/home', compact('users'));
                     break;
