@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('timetables', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
+            $table->foreignId('group_id')->constrained('groups')->onDelete('cascade');
             $table->string('day'); // Example values: "Saturday", "Sunday"
             $table->time('start_time');
             $table->time('end_time');

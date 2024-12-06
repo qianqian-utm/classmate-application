@@ -4,32 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Timetable;
-use App\Models\Subject;
+use App\Models\Group;
 
 class TimetableController extends Controller
 {
     // TimetableController.
     public function index()
     {
-        $timetables = Timetable::with('subject')->get();
+        $timetables = Timetable::with('group')->get();
         return view('Timetable/index', compact('timetables'));
     }
 
     public function create()
     {
-        $subjects = Subject::all();
-        return view('Timetable/create', compact('subjects'));
+        $groups = Group::all();
+        return view('Timetable/create', compact('groups'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'subject_id' => 'required|exists:subjects,id',
+            'group_id' => 'required|exists:groups,id',
             'day' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
+            'start_time' => 'nullable|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i',
             'date' => 'required',
-            'venue' => 'required',
+            'venue' => 'nullable',
         ]);
 
         Timetable::create($request->all());
@@ -39,9 +39,9 @@ class TimetableController extends Controller
 
     public function edit($id)
     {
-        $subjects = Subject::all();
+        $groups = Group::all();
         $timetable = Timetable::find($id);
-        return view('Timetable/edit', compact( 'subjects', 'timetable'));
+        return view('Timetable/edit', compact( 'groups', 'timetable'));
     }
 
 
@@ -49,11 +49,11 @@ class TimetableController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'subject_id' => 'required|exists:subjects,id',
+            'group_id' => 'required|exists:groups,id',
             'day' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
-            'venue' => 'nullable|string',
+            'start_time' => 'nullable|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i',
+            'venue' => 'nullable',
         ]);
 
         $timetable = Timetable::findOrFail($id);

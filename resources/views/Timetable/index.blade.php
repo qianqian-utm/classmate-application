@@ -19,7 +19,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Subject</th>
+                <th>Group</th>
                 <th>Day</th>
                 <th>Start Time</th>
                 <th>End Time</th>
@@ -32,17 +32,12 @@
         <tbody>
             @foreach ($timetables as $timetable)
                 <tr>
-                    <td>{{ $timetable->subject->name }}</td>
+                    <td>{{ $timetable->group->name }}</td>
                     <td>{{ $timetable->day }}</td>
                     <td>{{ $timetable->start_time }}</td>
                     <td>{{ $timetable->end_time }}</td>
                     <td>{{ $timetable->date }}</td>
                     <td>{{ $timetable->venue }}</td>
-                    <td>
-                        @foreach ($timetable->subject->groups as $group)
-                            {{ $group->name }}
-                        @endforeach
-                    </td>
                     <td>
                         <a href="{{ route('tt.edit', $timetable->id) }}" class="btn btn-warning">Edit</a>
                         <form action="{{ route('tt.delete', $timetable->id) }}" method="POST" style="display: inline;">
