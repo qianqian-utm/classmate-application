@@ -8,7 +8,6 @@ use App\Models\Group;
 
 class TimetableController extends Controller
 {
-    //
     // TimetableController.
     public function index()
     {

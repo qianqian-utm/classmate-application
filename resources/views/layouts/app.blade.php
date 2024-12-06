@@ -74,6 +74,44 @@ button:disabled {
     cursor: not-allowed ;
 }
 
+.badge {
+    background-color: #43498a;
+    color: white;
+    padding: 4px 8px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 0.9em;
+    margin: 0 2px;
+
+    &.badge-lab {
+        background-color: #2b914a;
+    }
+
+    &.badge-individual {
+        background-color: #2b6091;
+    }
+
+    &.badge-group_project {
+        background-color: #916d2b;
+    }
+
+    &.badge-quiz {
+        background-color: #2b914a;
+    }
+
+    &.badge-midterm {
+        background-color: #2b6091;
+    }
+
+    &.badge-final {
+        background-color: #916d2b;
+    }
+}
+
+
+
+
+
     </style>
 </head>
 <body>
@@ -89,10 +127,9 @@ button:disabled {
                 @if(auth()->check() && auth()->user()->role == '1')
                     <a href="{{ url('/') }}" class="w3-bar-item w3-button">Users</a>
                     <a href="{{ route('admin.notification') }}" class="w3-bar-item w3-button">Notification</a>
-                    <a href="#" class="w3-bar-item w3-button">Schedule</a>
+                    <a href="{{ route('groups.index') }}" class="w3-bar-item w3-button">Groups</a>
+                    <a href="{{ route('subjects.index') }}" class="w3-bar-item w3-button">Subjects</a>
                     <a href="#" class="w3-bar-item w3-button">Settings</a>
-                    <a href="{{ route('admin.createSubject') }}" class="w3-bar-item w3-button">Create Subject</a>
-                   
                 @endif
 
                 @if(auth()->check() && auth()->user()->role == '2')

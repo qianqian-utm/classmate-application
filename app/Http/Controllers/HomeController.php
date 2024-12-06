@@ -23,12 +23,26 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         if(auth()->check()){
             switch(auth()->user()->role){
                 case "1":
-                    $users = DB::table('users')->get();
+                    $query = User::query();
+
+                    // Filter by role
+                    if ($request->filled('role')) {
+                        $query->where('role', $request->role);
+                    }
+
+                    // Search by name
+                    if ($request->filled('search')) {
+                        $query->where('name', 'like', '%' . $request->search . '%');
+                    }
+
+                    // Paginate results
+                    $users = $query->paginate(10);
+
                     return view('/admin/home', compact('users'));
                     break;
                 case "2":
