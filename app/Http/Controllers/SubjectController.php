@@ -6,6 +6,7 @@ use App\Models\Subject;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class SubjectController extends Controller
 {
@@ -44,9 +45,10 @@ class SubjectController extends Controller
 
     public function create()
     {
-        $groups = Group::all();
-        $users = User::where('role', 2)->get(); // Only lecturers
-        return view('subjects.create', compact('groups', 'users'));
+        $groups    = Group::all();
+        $lecturers = User::where('role', 2)->orderBy("name","asc")->get();
+        $students  = User::where('role', 3)->orderBy("name","asc")->get();
+        return view('subjects.create', compact('groups', 'lecturers', 'students'));
     }
 
     public function store(Request $request)
@@ -55,32 +57,24 @@ class SubjectController extends Controller
             'code' => 'required|unique:subjects|max:20',
             'name' => 'required|max:255',
             'groups' => 'required|array|min:1',
-            'users' => 'required|array|min:1'
+            'lecturers' => 'required|array|min:1',
+            'students' => 'required|array|min:1'
         ], [
-            'groups.required' => 'At least one group must be selected.',
-            'groups.min' => 'At least one group must be selected.',
-            'users.required' => 'At least one user must be selected.',
-            'users.min' => 'At least one lecturer must be selected.'
+            'groups.required' => 'Group must be selected.',
+            'lecturers.required' => 'At least one lecturer must be selected.',
+            'students.required' => 'At least one student must be selected.'
         ]);
-
-        // Additional check to ensure at least one selected user is a lecturer
-        $lecturerExists = User::whereIn('id', $validated['users'])
-            ->where('role', 2)
-            ->exists();
-
-        if (!$lecturerExists) {
-            return back()->withInput()->withErrors([
-                'users' => 'At least one selected user must be a lecturer.'
-            ]);
-        }
 
         $subject = Subject::create([
             'code' => $validated['code'],
             'name' => $validated['name']
         ]);
 
-        $subject->groups()->attach($validated['groups']);
-        $subject->users()->attach($validated['users']);
+        // Combine lecturers and students for user sync
+        $allUsers = array_merge($validated['lecturers'], $validated['students']);
+
+        $subject->groups()->sync($validated['groups']);
+        $subject->users()->sync($allUsers);
 
         return redirect()->route('subjects.index')
             ->with('success', 'Subject created successfully.');
@@ -88,13 +82,15 @@ class SubjectController extends Controller
 
     public function edit(Subject $subject)
     {
-        $groups = Group::all();
-        // Filter users to only include lecturers and students
-        $users = User::whereIn('role', [2, 3])->get();
-        $selectedGroups = $subject->groups->pluck('id')->toArray();
-        $selectedUsers = $subject->users->pluck('id')->toArray();
-        
-        return view('subjects.edit', compact('subject', 'groups', 'users', 'selectedGroups', 'selectedUsers'));
+        $groups    = Group::all();
+        $lecturers = User::where('role', 2)->orderBy("name", "asc")->get();
+        $students  = User::where('role', 3)->orderBy("name", "asc")->get();
+
+        // prevent error when empty values
+        $selectedGroups    = $subject->groups    ? $subject->groups->pluck('id')->toArray()    : [];
+        $selectedLecturers = $subject->lecturers ? $subject->lecturers->pluck('id')->toArray() : [];
+        $selectedStudents  = $subject->students  ? $subject->students->pluck('id')->toArray()  : [];
+        return view('subjects.edit', compact('subject', 'groups', 'lecturers', 'students', 'selectedGroups', 'selectedLecturers', 'selectedStudents'));
     }
 
     public function update(Request $request, Subject $subject)
@@ -103,33 +99,23 @@ class SubjectController extends Controller
             'code' => 'required|unique:subjects,code,'.$subject->id.'|max:20',
             'name' => 'required|max:255',
             'groups' => 'required|array|min:1',
-            'users' => 'required|array|min:1'
+            'lecturers' => 'required|array|min:1',
+            'students' => 'required|array|min:1'
         ], [
-            'groups.required' => 'At least one group must be selected.',
-            'groups.min' => 'At least one group must be selected.',
-            'users.required' => 'At least one user must be selected.',
-            'users.min' => 'At least one lecturer must be selected.'
+            'groups.required' => 'Group must be selected.',
+            'lecturers.required' => 'At least one lecturer must be selected.',
+            'students.required' => 'At least one student must be selected.'
         ]);
-
-        // Additional check to ensure at least one selected user is a lecturer
-        $lecturerExists = User::whereIn('id', $validated['users'])
-            ->where('role', 2)
-            ->exists();
-
-        if (!$lecturerExists) {
-            return back()->withInput()->withErrors([
-                'users' => 'At least one selected user must be a lecturer.'
-            ]);
-        }
 
         $subject->update([
             'code' => $validated['code'],
             'name' => $validated['name']
         ]);
 
-        // Sync groups and users
+        $allUsers = array_merge($validated['lecturers'], $validated['students']);
+
         $subject->groups()->sync($validated['groups']);
-        $subject->users()->sync($validated['users']);
+        $subject->users()->sync($allUsers);
 
         return redirect()->route('subjects.index')
             ->with('success', 'Subject updated successfully.');
@@ -143,5 +129,28 @@ class SubjectController extends Controller
 
         return redirect()->route('subjects.index')
             ->with('success', 'Subject deleted successfully.');
+    }
+
+    public function show(Subject $subject)
+    {
+        $users = $subject->lecturers->merge($subject->students)->map(function ($user) {
+            $user->role = $user->role === 2 ? 'lecturer' : 'student';
+            return $user;
+        })->sortBy('name');
+
+        $perPage = 10;
+        $currentPage = request('page', 1);
+        $pagedUsers = new LengthAwarePaginator(
+            $users->forPage($currentPage, $perPage),
+            $users->count(),
+            $perPage,
+            $currentPage,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        return view('subjects.show', [
+            'subject' => $subject,
+            'users' => $pagedUsers
+        ]);
     }
 }

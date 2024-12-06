@@ -18,4 +18,16 @@ class Subject extends Model
     {
         return $this->belongsToMany(User::class, 'class_list', 'subject_id', 'user_id');
     }
+
+    public function lecturers()
+    {
+        return $this->belongsToMany(User::class, 'class_list', 'subject_id', 'user_id')
+            ->where('users.role', 2);
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'class_list', 'subject_id', 'user_id')
+            ->where('users.role', 3);
+    }
 }

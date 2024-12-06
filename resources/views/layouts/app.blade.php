@@ -228,5 +228,6 @@ function w3_close() {
     document.getElementById("openNav").style.display = "inline-block";
 }
 </script>
+@stack('scripts')
 </body>
 </html>
