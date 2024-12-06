@@ -31,7 +31,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Assign Groups</label>
-                            <select name="groups[]" class="form-control" multiple="multiple">
+                            <select name="groups[]" class="form-control" required>
                                 @foreach($groups as $group)
                                     <option value="{{ $group->id }}" 
                                         {{ in_array($group->id, $selectedGroups) ? 'selected' : '' }}>
@@ -42,7 +42,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Assign Users</label>
-                            <select name="users[]" class="form-control" multiple="multiple">
+                            <select name="users[]" class="form-control" multiple="multiple" required>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}" 
                                         {{ in_array($user->id, $selectedUsers) ? 'selected' : '' }}>
