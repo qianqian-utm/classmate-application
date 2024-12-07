@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Subject;
 use App\Models\InformationDetail;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
     public function notification()
     {
         $informationDetails = InformationDetail::with('subject')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('scheduled_at', 'desc')
             ->get()
             ->groupBy('type');
 
@@ -21,20 +22,9 @@ class NotificationController extends Controller
             'assignment' => $informationDetails['assignment'] ?? []
         ];
 
-        return view('admin.notification', compact('notifications'));
-    }
+        $subjects = Subject::all()->sortBy('name');
 
-    public function listNotifications($type)
-    {
-        $validTypes = ['class', 'assignment', 'exam'];
-        
-        if (!in_array($type, $validTypes)) {
-            abort(404);
-        }
-
-        $notifications = InformationDetail::byType($type)->get();
-
-        return view("admin.notification.{$type}", compact('notifications'));
+        return view('admin.notification', compact('notifications','subjects'));
     }
 
     public function createNotification($type)
@@ -45,7 +35,7 @@ class NotificationController extends Controller
             abort(404);
         }
 
-        $subjects = Subject::all(); // Fetch all subjects for dropdown
+        $subjects = Subject::all()->sortBy('name');
 
         return view('admin.notification.create', compact('type', 'subjects'));
     }
@@ -91,7 +81,7 @@ class NotificationController extends Controller
         }
 
         $notification = InformationDetail::byType($type)->findOrFail($id);
-        $subjects = Subject::all(); // Fetch all subjects for dropdown
+        $subjects = Subject::all()->sortBy('name');
 
         return view('admin.notification.edit', compact('type', 'notification', 'subjects'));
     }

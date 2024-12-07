@@ -7,7 +7,20 @@
             {{ session('success') }}
         </div>
     @endif
-    <h2 class="mb-3">Notificationss</h2>
+    <h2 class="mb-3">Notifications</h2>
+
+    {{-- Subject Filter --}}
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <select id="subject-filter" class="form-control">
+                <option value="">All Subjects</option>
+                @foreach($subjects as $subject)
+                    <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+
     <div class="row col-md-12">
         @foreach(['class', 'exam', 'assignment'] as $type)
             <div class="card col-md-4">
@@ -22,11 +35,13 @@
                     </div>
                     <div class="" style="max-height: 550px; overflow-y:auto;">
                         @foreach($notifications[$type] as $notification)
-                            <div class="mb-4">
+                            <div class="mb-4 notification-item" 
+                                 data-subject-id="{{ $notification->subject_id }}"
+                                 data-type="{{ $type }}">
                                 <div class="card bg-white" style="max-height: 200px; overflow-y:auto">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between">
-                                            <div>
+                                                <div>
                                                 @if(auth()->check() && auth()->user()->role == '1')
                                                     <a href="{{ route('admin.notification.edit', ['type' => $type, 'id' => $notification->id]) }}" class="btn btn-warning btn-sm">
                                                         <i class="fas fa-pencil"></i>
@@ -53,18 +68,16 @@
                                                     @case('assignment')
                                                         Due date:
                                                         @break
-
                                                     @case('class')
                                                         Class date:
                                                         @break
-
                                                     @case('exam')
                                                         Exam date:
                                                         @break
                                                 @endswitch
 
                                                 {{ \Carbon\Carbon::parse($notification->scheduled_at)->format('d F Y') }}
-                                                </strong>
+                                            </strong>
                                             @endif
                                         </p>
                                         <span class="badge">{{ $notification->subject->name }}</span>
@@ -86,4 +99,27 @@
         @endforeach
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const subjectFilter = document.getElementById('subject-filter');
+    const notificationItems = document.querySelectorAll('.notification-item');
+
+    subjectFilter.addEventListener('change', function() {
+        const selectedSubjectId = this.value;
+
+        notificationItems.forEach(item => {
+            const itemSubjectId = item.getAttribute('data-subject-id');
+            
+            if (selectedSubjectId === '' || itemSubjectId === selectedSubjectId) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+@endpush
 @endsection
