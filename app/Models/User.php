@@ -47,4 +47,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getRoleNameAttribute()
+    {
+        return match($this->role) {
+            1 => 'Admin',
+            2 => 'Lecturer',
+            3 => 'Student',
+            default => 'Unknown'
+        };
+    }
+
 }
