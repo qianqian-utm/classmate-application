@@ -131,26 +131,44 @@ class SubjectController extends Controller
             ->with('success', 'Subject deleted successfully.');
     }
 
-    public function show(Subject $subject)
-    {
-        $users = $subject->lecturers->merge($subject->students)->map(function ($user) {
-            $user->role = $user->role === 2 ? 'lecturer' : 'student';
-            return $user;
-        })->sortBy('name');
+    public function show(Subject $subject, Request $request)
+{
+    $users = $subject->lecturers->merge($subject->students)->map(function ($user) {
+        $user->role = $user->role === 2 ? 'lecturer' : 'student';
+        return $user;
+    })->sortBy('name');
 
-        $perPage = 10;
-        $currentPage = request('page', 1);
-        $pagedUsers = new LengthAwarePaginator(
-            $users->forPage($currentPage, $perPage),
-            $users->count(),
-            $perPage,
-            $currentPage,
-            ['path' => request()->url(), 'query' => request()->query()]
-        );
+    // Get filter parameters
+    $searchTerm = $request->input('search', '');
+    $roleFilter = $request->input('role', '');
 
-        return view('subjects.show', [
-            'subject' => $subject,
-            'users' => $pagedUsers
-        ]);
+    // Apply search filter
+    if ($searchTerm) {
+        $users = $users->filter(function ($user) use ($searchTerm) {
+            return stripos($user->name, $searchTerm) !== false;
+        });
     }
+
+    // Apply role filter
+    if ($roleFilter) {
+        $users = $users->where('role', $roleFilter === '2' ? 'lecturer' : 'student');
+    }
+
+    $perPage = 10;
+    $currentPage = $request->input('page', 1);
+    $pagedUsers = new LengthAwarePaginator(
+        $users->forPage($currentPage, $perPage),
+        $users->count(),
+        $perPage,
+        $currentPage,
+        ['path' => $request->url(), 'query' => $request->query()]
+    );
+
+    return view('subjects.show', [
+        'subject' => $subject,
+        'users' => $pagedUsers,
+        'searchTerm' => $searchTerm,
+        'roleFilter' => $roleFilter
+    ]);
+}
 }

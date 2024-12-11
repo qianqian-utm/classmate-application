@@ -17,7 +17,7 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    
+
     // Lecturer routes
     Route::middleware([RoleMiddleware::class . ':2'])->group(function () {
         Route::get('/lecturer', [LecturerController::class, 'index'])->name('lecturer.index');
@@ -38,31 +38,23 @@ Route::group(['prefix' => 'user'], function () {
     Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('user.update');
 });
 
-Route::group(['prefix' => 'student'], function () {
-    Route::get('/index', [StudentController::class, 'index'])->name('student.index');
-    Route::get('/notifications', [StudentController::class, 'notifications'])->name('student.notifications');
+Route::group(['prefix' => 'notification'], function () {
+    Route::get('/index', [NotificationController::class, 'index'])
+    ->name('notification.index');
+    Route::get('/{type}/create', [NotificationController::class, 'createNotification'])
+    ->name('notification.create');
+    Route::post('/{type}/store', [NotificationController::class, 'storeNotification'])
+    ->name('notification.store');
+    Route::get('/{type}/edit/{id}', [NotificationController::class, 'editNotification'])
+    ->name('notification.edit');
+    Route::put('/{type}/update/{id}', [NotificationController::class, 'updateNotification'])
+    ->name('notification.update');
+    Route::delete('/{type}/delete/{id}', [NotificationController::class, 'deleteNotification'])
+    ->name('notification.delete');
 });
 
 Route::resource('subjects', SubjectController::class);
-
 Route::resource('groups', GroupController::class);
-
-Route::group(['prefix' => 'admin'], function () {
-    Route::prefix('notification')->group(function () {
-        Route::get('/', [NotificationController::class, 'notification'])
-            ->name('admin.notification');
-        Route::get('/{type}/create', [NotificationController::class, 'createNotification'])
-            ->name('admin.notification.create');
-        Route::post('/{type}/store', [NotificationController::class, 'storeNotification'])
-            ->name('admin.notification.store');
-        Route::get('/{type}/edit/{id}', [NotificationController::class, 'editNotification'])
-            ->name('admin.notification.edit');
-        Route::put('/{type}/update/{id}', [NotificationController::class, 'updateNotification'])
-            ->name('admin.notification.update');
-        Route::delete('/{type}/delete/{id}', [NotificationController::class, 'deleteNotification'])
-            ->name('admin.notification.delete');
-    });
-});
 
 Route::group(['prefix' => 'timetable'], function () {
     Route::get('/index', [TimetableController::class, 'index'])->name('tt.index');
