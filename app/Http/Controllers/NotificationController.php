@@ -9,12 +9,49 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    public function notification()
+    public function index()
     {
-        $informationDetails = InformationDetail::with('subject')
-            ->orderBy('scheduled_at', 'desc')
-            ->get()
-            ->groupBy('type');
+        $user = Auth::user();
+
+        switch($user->role){
+            case(1):
+                $informationDetails = InformationDetail::with('subject')
+                ->orderBy('scheduled_at', 'desc')
+                ->get()
+                ->groupBy('type');
+
+                $subjects = Subject::all()->sortBy('name');
+                break;
+            case(2):
+                $informationDetails = InformationDetail::whereHas('subject', function($query) use ($user) {
+                    $query->whereHas('lecturers', function($subQuery) use ($user) {
+                        $subQuery->where('users.id', $user->id);
+                    });
+                })
+                ->orderBy('scheduled_at', 'desc')
+                ->get()
+                ->groupBy('type');
+
+                $subjects = Subject::whereHas('lecturers', function($query) use ($user) {
+                    $query->where('users.id', $user->id);
+                })->orderBy('name','asc')->get();
+                break;
+            case(3):
+                // Fetch notifications for subjects the student is enrolled in
+                $informationDetails = InformationDetail::whereHas('subject', function($query) use ($user) {
+                    $query->whereHas('students', function($subQuery) use ($user) {
+                        $subQuery->where('users.id', $user->id);
+                    });
+                })
+                ->orderBy('scheduled_at', 'desc')
+                ->get()
+                ->groupBy('type');
+
+                $subjects = Subject::whereHas('students', function($query) use ($user) {
+                    $query->where('users.id', $user->id);
+                })->orderBy('name','asc')->get();
+                break;
+        }
 
         $notifications = [
             'class' => $informationDetails['class'] ?? [],
@@ -22,28 +59,43 @@ class NotificationController extends Controller
             'assignment' => $informationDetails['assignment'] ?? []
         ];
 
-        $subjects = Subject::all()->sortBy('name');
-
-        return view('admin.notification', compact('notifications','subjects'));
+        return view('notification.index', compact('notifications','subjects'));
     }
 
     public function createNotification($type)
     {
+        $user       = Auth::user();
+        $subjects   = Subject::all()->sortBy('name');
         $validTypes = ['class', 'assignment', 'exam'];
-        
+
         if (!in_array($type, $validTypes)) {
             abort(404);
         }
 
-        $subjects = Subject::all()->sortBy('name');
+        // Lecturer can create only for their subjects
+        if ($user->role === 2) {
+            $subjects = $subjects->filter(function ($subject) use ($user) {
+                return $subject->lecturers->contains($user);
+            });
 
-        return view('admin.notification.create', compact('type', 'subjects'));
+            if ($subjects->isEmpty()) {
+                abort(403, 'Unauthorized subject access');
+            }
+        }
+
+        if ( ($user->role === 1) || ($user->role === 2) ) {
+            return view('notification.create', compact('type','subjects'));
+        }
+
+        abort(403, 'Unauthorized access');
     }
 
     public function storeNotification(Request $request, $type)
     {
+        $user       = Auth::user();
+        $subjects   = Subject::all()->sortBy('name');
         $validTypes = ['class', 'assignment', 'exam'];
-        
+
         if (!in_array($type, $validTypes)) {
             abort(404);
         }
@@ -66,16 +118,33 @@ class NotificationController extends Controller
         $validatedData = $request->validate($validationRules);
         $validatedData['type'] = $type;
 
-        InformationDetail::create($validatedData);
+        // Lecturer can only create for their subjects
+        if ($user->role === 2) {
+            $subjects = $subjects->filter(function ($subject) use ($user) {
+                return $subject->lecturers->contains($user);
+            });
 
-        return redirect()->route("admin.notification", ['type' => $type])
+            if ($subjects->isEmpty()) {
+                abort(403, 'Unauthorized subject access');
+            }
+        }
+
+        if ( ($user->role === 1) || ($user->role === 2) ) {
+            InformationDetail::create($validatedData);
+
+            return redirect()->route("notification.index", ['type' => $type])
             ->with('success', ucfirst($type) . ' notification created successfully');
+        }
+
+        abort(403, 'Unauthorized access');
     }
 
     public function editNotification($type, $id)
     {
+        $user       = Auth::user();
+        $subjects   = Subject::all()->sortBy('name');
         $validTypes = ['class', 'assignment', 'exam'];
-        
+
         if (!in_array($type, $validTypes)) {
             abort(404);
         }
@@ -83,7 +152,25 @@ class NotificationController extends Controller
         $notification = InformationDetail::byType($type)->findOrFail($id);
         $subjects = Subject::all()->sortBy('name');
 
-        return view('admin.notification.edit', compact('type', 'notification', 'subjects'));
+        // Admin can edit for any subject
+        if ($user->role === 1) {
+            return view('notification.edit', compact('type', 'notification', 'subjects'));
+        }
+        
+        // Lecturer can create only for their subjects
+        if ($user->role === 2) {
+            $subjects = $subjects->filter(function ($subject) use ($user) {
+                return $subject->lecturers->contains($user);
+            });
+
+            if ($subjects->isEmpty()) {
+                abort(403, 'Unauthorized subject access');
+            }
+
+            return view('notification.edit', compact('type', 'notification', 'subjects'));
+        }
+
+        abort(403, 'Unauthorized access');
     }
 
     public function updateNotification(Request $request, $type, $id)
@@ -115,7 +202,7 @@ class NotificationController extends Controller
 
         $notification->update($validatedData);
 
-        return redirect()->route("admin.notification", ['type' => $type])
+        return redirect()->route("notification.index", ['type' => $type])
             ->with('success', ucfirst($type) . ' notification updated successfully');
     }
 
@@ -130,10 +217,9 @@ class NotificationController extends Controller
         $notification = InformationDetail::byType($type)->findOrFail($id);
         $notification->delete();
 
-        return redirect()->route("admin.notification", ['type' => $type])
+        return redirect()->route("notification.index", ['type' => $type])
             ->with('success', ucfirst($type) . ' notification deleted successfully');
     }
-
 
 }
 

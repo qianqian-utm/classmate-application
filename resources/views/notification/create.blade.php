@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <form action="{{ route('admin.notification.store', ['type' => $type]) }}" method="POST">
+            <form action="{{ route('notification.store', ['type' => $type]) }}" method="POST">
                 @csrf
                 <h4 class="mb-5">Create {{ ucfirst($type) }} Notification</h4>
 
