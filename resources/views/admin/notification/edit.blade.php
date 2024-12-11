@@ -103,17 +103,19 @@
                 </div>
                 @endif
 
-                <div class="mb-3">
-                    <label for="venue" class="form-label">Venue</label>
-                    <input type="text" 
-                           class="form-control @error('venue') is-invalid @enderror" 
-                           id="venue" 
-                           name="venue" 
-                           value="{{ old('venue', $notification->venue) }}">
-                    @error('venue')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+                @if($type != 'assignment')
+                    <div class="mb-3">
+                        <label for="venue" class="form-label">Venue</label>
+                        <input type="text" 
+                            class="form-control @error('venue') is-invalid @enderror" 
+                            id="venue" 
+                            name="venue" 
+                            value="{{ old('venue', $notification->venue) }}">
+                        @error('venue')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                @endif
 
                 <div>
                     <button type="submit" class="btn btn-success">Update Notification</button>
