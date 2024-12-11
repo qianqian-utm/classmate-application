@@ -18,18 +18,24 @@
             </a>
         </div>
         <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <input type="text" id="searchInput" class="form-control" placeholder="Search by name or email">
+            <form method="GET" action="{{ route('subjects.show', $subject) }}" class="mb-3">
+                <div class="row align-items-center">
+                    <div class="col-md-5">
+                        <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ $searchTerm ?? request('search') }}">
+                    </div>
+                    <div class="col-md-4">
+                        <select name="role" class="form-control">
+                            <option value="">All Roles</option>
+                            <option value="2" {{ $roleFilter === '2' ? 'selected' : '' }}>Lecturer</option>
+                            <option value="3" {{ $roleFilter === '3' ? 'selected' : '' }}>Student</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+                        <a href="{{ route('subjects.show', $subject) }}" class="btn btn-secondary flex-grow-1">Reset</a>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <select id="roleFilter" class="form-select">
-                        <option value="">All Roles</option>
-                        <option value="lecturer">Lecturers</option>
-                        <option value="student">Students</option>
-                    </select>
-                </div>
-            </div>
+            </form>
 
             @if($users->isEmpty())
                 <h5 class="text-muted">No users assigned</h5>

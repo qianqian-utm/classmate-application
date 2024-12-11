@@ -63,11 +63,11 @@
                                         <button type="submit" onclick="window.location.href='{{ route('user.edit' , $user->id) }}'" class="btn btn-warning btn-sm" >
                                             <i class="fas fa-pencil"></i>
                                         </button>
-                                        <form action="{{ route('user.delete', $user->id) }}" method="POST" style="display: inline;">
+                                        <form action="{{ route('user.delete', $user->id) }}" method="POST" style="display: inline;" id="deleteForm{{ $user->id }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" 
-                                                    onclick="return confirm('Are you sure you want to delete this user?')" 
+                                            <button type="button" class="btn btn-danger btn-sm" 
+                                                    onclick="confirmDelete({{ $user->id }})" 
                                                     {{ $user->role == 1 ? 'disabled' : '' }}>
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -106,4 +106,13 @@
         </div>
     </div>
 </div>
+@push('scripts')
+<script>
+function confirmDelete(userId) {
+    if (confirm('Are you sure you want to delete this user?')) {
+        document.getElementById('deleteForm' + userId).submit();
+    }
+}
+</script>
+@endpush
 @endsection
