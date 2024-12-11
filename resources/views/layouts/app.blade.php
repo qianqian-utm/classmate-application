@@ -124,16 +124,15 @@ button:disabled {
                 <a href="{{ url('/') }}">
                     <img class="mb-3" src="{{ asset('images/classmatelogo.png') }}" alt="Logo" style="width: 80px; height: auto; display: block; margin:  auto;">
                 </a>
-                @if(auth()->check() && auth()->user()->role == '1')
+                @if(auth()->check() && ( auth()->user()->role == '1' ))
                     <a href="{{ url('/') }}" class="w3-bar-item w3-button">Users</a>
                     <a href="{{ route('groups.index') }}" class="w3-bar-item w3-button">Groups</a>
                     <a href="{{ route('subjects.index') }}" class="w3-bar-item w3-button">Subjects</a>
                 @endif
 
-                <a href="{{ route('admin.notification') }}" class="w3-bar-item w3-button">Notification</a>
+                <a href="{{ route('notification.index') }}" class="w3-bar-item w3-button">Notification</a>
                 <a href="{{ route('tt.index') }}" class="w3-bar-item w3-button">Timetable</a>
                 <a href="#" class="w3-bar-item w3-button">Settings</a>
-
             </div>
 
             <div class="" id="main" style="margin-left: 20%;">

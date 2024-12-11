@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <form action="{{ route('admin.notification.update', ['type' => $type, 'id' => $notification->id]) }}" method="POST">
+            <form action="{{ route('notification.update', ['type' => $type, 'id' => $notification->id]) }}" method="POST">
                 @csrf
                 @method('PUT')
 
