@@ -216,5 +216,6 @@ function w3_close() {
 }
 </script>
 @stack('scripts')
+@include('chat-widget')
 </body>
 </html>
