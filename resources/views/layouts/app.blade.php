@@ -132,7 +132,6 @@ button:disabled {
 
                 <a href="{{ route('notification.index') }}" class="w3-bar-item w3-button">Notification</a>
                 <a href="{{ route('tt.index') }}" class="w3-bar-item w3-button">Timetable</a>
-                <a href="{{ route('chatbot.index') }}" class="w3-bar-item w3-button">Chatbot</a>
                 <a href="#" class="w3-bar-item w3-button">Settings</a>
             </div>
 
@@ -217,5 +216,6 @@ function w3_close() {
 }
 </script>
 @stack('scripts')
+@include('chat-widget')
 </body>
 </html>
