@@ -36,6 +36,9 @@ return [
     */
 
     'mailers' => [
+        'mailtrap' => [
+            'transport' => 'mailtrap'
+        ],
 
         'smtp' => [
             'transport' => 'smtp',
@@ -109,8 +112,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'admin@classmate.com'),
+        'name' => env('MAIL_FROM_NAME', 'ClassMate'),
     ],
 
 ];

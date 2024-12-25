@@ -1,5 +1,12 @@
 <?php
 
+namespace App\Mail;
+
+use App\Models\InformationDetail;
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
+
 class InformationDetailNotification extends Mailable
 {
     public $informationDetail;

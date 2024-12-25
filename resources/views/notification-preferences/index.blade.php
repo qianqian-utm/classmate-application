@@ -9,48 +9,115 @@
                 {{ session('success') }}
             </div>
         @endif
-        <p>Subscribe to email? If subscribed, you will receive an email whenever there are new or updated information for the related subjects.</p>
-        <form method="POST" action="{{ route('notification-preferences.update') }}">
-            @csrf
-            @method('PUT')
+        
+        @if($subjects->isEmpty())
+                <div class="alert alert-warning mt-4" role="alert">
+                    You are currently not enrolled in any subject.
+                </div>
+        @else
+            <form method="POST" action="{{ route('notification-preferences.update') }}">
+                @csrf
+                @method('PUT')
 
-            <!-- update to make it checkboxes instead -->
-            <div class="space-y-4">
-                @foreach($subjects as $subject)
-                    <div class="flex items-center justify-between border-b pb-2">
-                        <label for="pref_{{ $subject->id }}" class="text-gray-700">
-                            <div>{{ $subject->code }} - {{ $subject->name }}</div>
-                            <div class="text-sm text-gray-500">
-                                @foreach($subject->lecturers as $lecturer)
-                                    <span class="bg-gray-200 rounded px-2 py-0.5 text-xs">{{ $lecturer->name }}</span>
-                                @endforeach
-                            </div>
-                        </label>
-                        <label class="relative inline-flex items-center cursor-pointer">
+                <div class="mb-4">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" 
+                            name="global_email_enabled" 
+                            id="global_email_enabled"
+                            value="1"
+                            {{ $user->global_email_enabled ? 'checked' : '' }}
+                            class="form-checkbox h-5 w-5 text-blue-600">
+                        <span class="ml-2 text-gray-700">Subscribe to email updates?</span>
+                    </label>
+                    <p class="text-sm text-gray-500 mt-1">
+                        If subscribed, you will receive email notifications for your selected subjects.
+                    </p>
+                </div>
+
+                <div class="border-t pt-4 mt-4">
+                    <div class="flex items-center mb-4">
+                        <label class="inline-flex items-center cursor-pointer">
                             <input type="checkbox" 
-                                    name="preferences[{{ $subject->id }}]"
-                                    id="pref_{{ $subject->id }}"
-                                    value="1"
-                                    {{ $preferences[$subject->id] ?? true ? 'checked' : '' }}
-                                    class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                id="select_all"
+                                class="form-checkbox h-5 w-5 text-blue-600"
+                                {{ !$user->global_email_enabled ? 'disabled' : '' }}>
+                            <span class="ml-2 text-gray-700 font-medium">Select/Deselect All Subjects</span>
                         </label>
                     </div>
-                @endforeach
-            </div>
 
-            @if($subjects->isEmpty())
-                <div class="alert alert-warning" role="alert">
-                    You are currently not enrolled to any subject.
+                    <div class="space-y-4">
+                        @foreach($subjects as $subject)
+                            <div class="flex items-center justify-between border-b pb-2">
+                                <label for="pref_{{ $subject->id }}" class="text-gray-700">
+                                    <div>{{ $subject->code }} {{ $subject->name }}</div>
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" 
+                                        name="preferences[{{ $subject->id }}]"
+                                        id="pref_{{ $subject->id }}"
+                                        value="1"
+                                        {{ $preferences[$subject->id] ?? true ? 'checked' : '' }}
+                                        {{ !$user->global_email_enabled ? 'disabled' : '' }}
+                                        class="form-checkbox h-5 w-5 text-blue-600 subject-checkbox">
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-            @else
-                <div class="mt-6">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Save Preferences
-                    </button>
-                </div>
-            @endif
-        </form>
+
+                    <div class="mt-6">
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Save Preferences
+                        </button>
+                    </div>
+            </form>
+        @endif
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const globalEmailEnabled = document.getElementById('global_email_enabled');
+    const selectAll = document.getElementById('select_all');
+    const subjectCheckboxes = document.querySelectorAll('.subject-checkbox');
+
+    // Check select all if all subjects are checked initially
+    const allChecked = Array.from(subjectCheckboxes)
+        .every(cb => cb.checked || cb.disabled);
+    selectAll.checked = allChecked;
+
+    globalEmailEnabled.addEventListener('change', function() {
+        const isChecked = this.checked;
+        selectAll.disabled = !isChecked;
+        
+        subjectCheckboxes.forEach(checkbox => {
+            checkbox.disabled = !isChecked;
+            if (isChecked) {
+                checkbox.checked = true;
+            }
+        });
+        
+        if (isChecked) {
+            selectAll.checked = true;
+        }
+    });
+
+    selectAll.addEventListener('change', function() {
+        const isChecked = this.checked;
+        subjectCheckboxes.forEach(checkbox => {
+            if (!checkbox.disabled) {
+                checkbox.checked = isChecked;
+            }
+        });
+    });
+
+    subjectCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const allChecked = Array.from(subjectCheckboxes)
+                .every(cb => cb.checked || cb.disabled);
+            selectAll.checked = allChecked;
+        });
+    });
+});
+</script>
 @endsection

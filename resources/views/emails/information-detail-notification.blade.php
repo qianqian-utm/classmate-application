@@ -10,9 +10,7 @@ A new {{ $informationDetail->type }} has been {{ $action }} for {{ $informationD
 @endif
 **Scheduled at:** {{ $informationDetail->scheduled_at->format('d M Y') }}
 
-@component('mail::button', ['url' => route('information.show', $informationDetail->id)])
-View Details
-@endcomponent
+Login to view details.
 
 Thanks,<br>
 {{ config('app.name') }}
