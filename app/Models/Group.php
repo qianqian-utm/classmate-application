@@ -10,7 +10,7 @@ class Group extends Model
 
     public function subjects()
     {
-        return $this->belongsToMany(Subject::class, 'groups_subjects', 'group_id', 'subject_id');
+        return $this->belongsToMany(Subject::class);
     }
 
     public function timetables()
