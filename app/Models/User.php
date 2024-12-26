@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role',
         'ic_number',
+        'global_email_enabled',
     ];
 
     /**
@@ -48,14 +49,14 @@ class User extends Authenticatable
         ];
     }
 
-    public function getRoleNameAttribute()
+    public function classList()
     {
-        return match($this->role) {
-            1 => 'Admin',
-            2 => 'Lecturer',
-            3 => 'Student',
-            default => 'Unknown'
-        };
+        return $this->hasMany(ClassList::class);
+    }
+
+    public function notificationPreferences()
+    {
+        return $this->hasMany(NotificationPreference::class);
     }
 
 }

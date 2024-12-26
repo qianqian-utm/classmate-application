@@ -11,6 +11,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\NotificationPreferenceController;
 
 // Authentication routes
 Auth::routes();
@@ -73,3 +74,6 @@ Route::group(['prefix' => 'chatbot'], function () {
     Route::get('/index', [ChatbotController::class, 'index'])->name('chatbot.index');
     Route::post('/prompt', [ChatbotController::class, 'prompt'])->name('chatbot.prompt');
 });
+
+Route::get('/notification-preferences', [NotificationPreferenceController::class, 'index'])->name('notification-preferences.index');
+Route::put('/notification-preferences', [NotificationPreferenceController::class, 'update'])->name('notification-preferences.update');

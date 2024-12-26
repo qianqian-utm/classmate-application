@@ -132,7 +132,7 @@ button:disabled {
 
                 <a href="{{ route('notification.index') }}" class="w3-bar-item w3-button">Notification</a>
                 <a href="{{ route('tt.index') }}" class="w3-bar-item w3-button">Timetable</a>
-                <a href="#" class="w3-bar-item w3-button">Settings</a>
+                <a href="{{ route('notification-preferences.index') }}" class="w3-bar-item w3-button">Settings</a>
             </div>
 
             <div class="" id="main" style="margin-left: 20%;">
