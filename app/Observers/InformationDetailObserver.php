@@ -30,11 +30,12 @@ class InformationDetailObserver
             })
             ->get();
 
-        Log::info('Subscribed users:', $users->toArray());
-
         foreach ($users as $user) {
-            Mail::to($user->email)->queue(new InformationDetailNotification($informationDetail, $action));
+            try {
+                Mail::to($user->email)->queue(new InformationDetailNotification($informationDetail, $action));
+            } catch (\Exception $e) {
+                Log::error('Failed to send email: ' . $e->getMessage());
+            }
         }
-        Log::info('Sent email to users dragonfruit:', $users->toArray());
     }
 }

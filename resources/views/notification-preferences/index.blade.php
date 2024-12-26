@@ -30,7 +30,7 @@
                         <span class="ml-2 text-gray-700">Subscribe to email updates?</span>
                     </label>
                     <p class="text-sm text-gray-500 mt-1">
-                        If subscribed, you will receive email notifications for your selected subjects.
+                        If subscribed, you will receive email notifications for your selected subjects when there is new/updated information.
                     </p>
                 </div>
 
