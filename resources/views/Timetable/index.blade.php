@@ -23,10 +23,7 @@
         <tr>
             <th>Group</th>
             <th>Day</th>
-            <!-- <th>Start Time</th>
-            <th>End Time</th> -->
             <th>Date</th>
-            <!-- <th>Venue</th> -->
             <th>Actions</th>
         </tr>
     </thead>
@@ -105,7 +102,7 @@ $weekCounter = 1; // Initialize a counter for the weeks
         <td>{{ $displayDate }}</td>
         @if($saturdayTimetable)
            
-            <td id="saturday"  class="" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer; background-color: {{ $colors[$saturdayTimetable->group->id] ?? 'white' }}; color: yellow;">GROUP {{ $saturdayTimetable->group->name }}</td>
+            <td id="saturday"  class="" data-bs-toggle="modal" data-bs-target="#timetableModal{{ $saturdayTimetable->id }}" style="cursor: pointer; background-color: {{ $colors[$saturdayTimetable->group->id] ?? 'white' }}; color: yellow;">GROUP {{ $saturdayTimetable->group->name }}</td>
         @else
             <td ></td>
         @endif
@@ -113,7 +110,7 @@ $weekCounter = 1; // Initialize a counter for the weeks
             @php
                 $sundayTimetable = $sundayTimetable ?? $groupedTimetables[$nextDate]->firstWhere('day', 'Sunday');
             @endphp
-            <td id="sunday"  class="" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer; background-color: {{ $colors[$sundayTimetable->group->id] ?? 'white' }}; color: yellow;"> GROUP {{ $sundayTimetable->group->name }}</td>
+            <td id="sunday"  class="" data-bs-toggle="modal" data-bs-target="#timetableModal{{ $sundayTimetable->id }}" style="cursor: pointer; background-color: {{ $colors[$sundayTimetable->group->id] ?? 'white' }}; color: yellow;"> GROUP {{ $sundayTimetable->group->name }}</td>
         @endif
     </tr>
     @php
@@ -137,7 +134,43 @@ $weekCounter = 1; // Initialize a counter for the weeks
   
 
   </table>
+  @foreach ($groupedTimetables as $date => $timetables)
+    @foreach ($timetables as $timetable)
+        <div class="modal fade" id="timetableModal{{ $timetable->id }}" tabindex="-1" aria-labelledby="timetableModalLabel{{ $timetable->id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="timetableModalLabel{{ $timetable->id }}">Timetable Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Group:</strong> {{ $timetable->group->name }}</p>
+                        <p><strong>Day:</strong> {{ $timetable->day }}</p>
+                        <p><strong>Date:</strong> {{ $timetable->date }}</p>
+                        <hr>
+                        <h6>Subjects:</h6>
+                        @if($timetable->group->subjects->count() > 0)
+                            <ul>
+                                @foreach($timetable->group->subjects as $subject)
+                                    <li>{{ $subject->name }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p>No subjects assigned to this group.</p>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+@endforeach
+
 </div>
+
+
  
       
 @endsection
