@@ -23,10 +23,7 @@
         <tr>
             <th>Group</th>
             <th>Day</th>
-            <!-- <th>Start Time</th>
-            <th>End Time</th> -->
             <th>Date</th>
-            <!-- <th>Venue</th> -->
             <th>Actions</th>
         </tr>
     </thead>
@@ -147,11 +144,9 @@ $weekCounter = 1; // Initialize a counter for the weeks
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p><strong>TT id:</strong> {{ $timetable->id }}</p>
                         <p><strong>Group:</strong> {{ $timetable->group->name }}</p>
                         <p><strong>Day:</strong> {{ $timetable->day }}</p>
                         <p><strong>Date:</strong> {{ $timetable->date }}</p>
-                        
                         <hr>
                         <h6>Subjects:</h6>
                         @if($timetable->group->subjects->count() > 0)
