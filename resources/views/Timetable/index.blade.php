@@ -152,7 +152,9 @@ $weekCounter = 1; // Initialize a counter for the weeks
                         @if($timetable->group->subjects->count() > 0)
                             <ul>
                                 @foreach($timetable->group->subjects as $subject)
-                                    <li>{{ $subject->name }}</li>
+                                    <li>
+                                    <span class="badge">{{ $subject->name }}</span>
+                                    </li>
                                 @endforeach
                             </ul>
                         @else
