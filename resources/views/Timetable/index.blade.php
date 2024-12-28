@@ -153,7 +153,7 @@ $weekCounter = 1; // Initialize a counter for the weeks
                             <ul>
                                 @foreach($timetable->group->subjects as $subject)
                                     <li>
-                                    <span class="badge">{{ $subject->name }}</span>
+                                        {{ $subject->name }}
                                     </li>
                                 @endforeach
                             </ul>

@@ -14,7 +14,6 @@
                 @endforeach
             </select>
         </div>
-       
         <div class="form-group">
             <label for="date">Date</label>
             <input type="date" name="date" class="form-control" id="date">
@@ -22,10 +21,6 @@
         <div class="form-group">
             <label for="day">Day</label>
             <input type="text" name="day" class="form-control" id="day" readonly>
-            <!-- <select name="day" class="form-control" id="day" >
-                <option value="Saturday">Saturday</option>
-                <option value="Sunday">Sunday</option>
-            </select> -->
         </div>
         <button type="submit" class="btn btn-success mt-3">Save</button>
     </form>
