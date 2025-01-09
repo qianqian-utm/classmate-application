@@ -2,7 +2,9 @@
 
 # Wait for database connection
 echo "Waiting for database connection..."
-while ! php artisan db:monitor --check >/dev/null 2>&1; do
+echo "DB_HOST: $DB_HOST"
+echo "DB_PORT: $DB_PORT"
+while ! php artisan db:show --connection=mysql >/dev/null 2>&1; do
     echo "Still waiting for database connection..."
     sleep 1
 done
