@@ -49,7 +49,7 @@ RUN chown -R www-data:www-data /app \
     && chmod -R 755 /app/storage \
     && chmod -R 755 /app/bootstrap/cache
 
-EXPOSE 8000
+EXPOSE 8080
 
 # Use the entrypoint script
 ENTRYPOINT ["docker-entrypoint.sh"]
