@@ -27,6 +27,9 @@ WORKDIR /app
 # Copy application files
 COPY . /app
 
+# Create .env file from example
+COPY .env.example .env
+
 # Copy the entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
@@ -37,7 +40,7 @@ RUN composer install --no-dev --optimize-autoloader
 # Install npm dependencies and build assets (if you're using frontend assets)
 RUN npm install && npm run build
 
-# Generate app key
+# Generate key
 RUN php artisan key:generate
 
 # Set permissions
