@@ -3,6 +3,7 @@
 # Wait for database connection
 echo "Waiting for database connection..."
 while ! php artisan db:monitor --check >/dev/null 2>&1; do
+    echo "Still waiting for database connection..."
     sleep 1
 done
 echo "Database connection established"
