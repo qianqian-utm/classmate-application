@@ -18,7 +18,6 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     // Lecturer routes
     Route::middleware([RoleMiddleware::class . ':2'])->group(function () {
