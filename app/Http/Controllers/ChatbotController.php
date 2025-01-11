@@ -15,7 +15,7 @@ class ChatbotController extends Controller
     public function fetchGroqResponse($question, $context)
     {
         $client = new \GuzzleHttp\Client();
-        $apiKey = env('GROQ_API_KEY'); // Ensure your API key is correctly set in the .env file
+        $apiKey = config('services.groq.key');
         $endpoint = 'https://api.groq.com/openai/v1/chat/completions';
 
         $contextString = json_encode($context, JSON_PRETTY_PRINT);
