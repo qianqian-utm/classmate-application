@@ -62,21 +62,6 @@ class ChatbotController extends Controller
         }
     }
 
-    // private function loadGuidelineContent()
-    // {
-    //     $filePath = resource_path('docs/classmate-guideline.md');
-
-    //     try {
-    //         if (file_exists($filePath)) {
-    //             return file_get_contents($filePath);
-    //         } else {
-    //             return "Guideline file not found.";
-    //         }
-    //     } catch (\Exception $e) {
-    //         return "Error loading guideline: " . $e->getMessage();
-    //     }
-    // }
-
     private function generateIntelligentContext()
 {
     $users = DB::table('users')->get();
@@ -86,8 +71,6 @@ class ChatbotController extends Controller
     $timetableDetails = DB::table('timetables')->get();
     $groupsubjectDetails = DB::table('group_subject')->get();
     $groupDetails = DB::table('groups')->get();
-
-    // $guidelineContent = $this->loadGuidelineContent();
 
     $subjectTeachers = [];
     $subjectStudents = [];
@@ -125,8 +108,6 @@ class ChatbotController extends Controller
             ];
         }
     }
-    
-
 
     // Summarized context with only Group 3 subjects
     $contextSummary = [
@@ -139,13 +120,10 @@ class ChatbotController extends Controller
         'timetable_details' => $timetableDetails,
         'groupsubject_details' => $groupsubjectDetails,
         'group_details' => $groupDetails,
-        // 'guideline_details' => $guidelineContent,
     ];
 
     return $contextSummary;
 }
-
-    
 
     public function prompt(Request $request)
     {
@@ -160,6 +138,4 @@ class ChatbotController extends Controller
 
         return response()->json(['response' => $groqResponse]);
     }
-
-    
 }
