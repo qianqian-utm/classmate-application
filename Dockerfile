@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     nodejs \
     npm \
-    default-mysql-client
+    default-mysql-client \
+    supervisor
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -30,6 +31,10 @@ COPY . /app
 
 # Create .env file from example
 COPY .env.example .env
+
+# Setup supervisor configuration
+RUN mkdir -p /var/log/supervisor
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Copy the entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/

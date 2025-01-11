@@ -16,5 +16,5 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Start the application
-php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+# Start supervisor (which will start php-fpm and queue worker)
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
