@@ -133,6 +133,24 @@ class ChatbotController extends Controller
             return response()->json(['error' => 'Question is required'], 400);
         }
 
+        // Define keywords or phrases that would indicate a relevant academic query
+        $relevantKeywords = ['timetable', 'subject', 'group', 'class', 'schedule', 'course', 'lecturer', 'student', 'attendance', 'exam'];
+
+        // Check if the question contains any of the relevant keywords
+        $isRelevant = false;
+        foreach ($relevantKeywords as $keyword) {
+            if (stripos($question, $keyword) !== false) {
+                $isRelevant = true;
+                break;
+            }
+        }
+
+        // If the question is irrelevant, return a standard response
+        if (!$isRelevant) {
+            return response()->json(['response' => "I'm sorry, I can only assist with academic or scheduling questions. Please ask something related to timetables, subjects, or classes."]);
+        }
+
+        // If the question is relevant, proceed with generating context and fetching the response
         $context = $this->generateIntelligentContext();
         $groqResponse = $this->fetchGroqResponse($question, $context);
 
